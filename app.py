@@ -10,7 +10,6 @@ from tensorflow.keras.layers import add, BatchNormalization, LSTM, Dense, Embedd
 from tensorflow.keras import regularizers, optimizers, initializers
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from flask import Flask, render_template,  url_for, request
-import gc
 
 app = Flask(__name__)
 
@@ -50,10 +49,12 @@ def home():
 
 @app.route('/predict',methods=['POST'])
 def predictCaption():
-    global count
+    file_object  = open("./imageData/count.txt", "r") 
+    count = int(file_object.readline().strip())
+    file_object.close()
+    count += 1
     url = request.form['imageSource']
     imageName = "./imageData/"+str(count)+".jpg"
-    count+=1
     urllib.request.urlretrieve(url, imageName)
     img = Image.open(imageName)
     img = img.resize((299,299), Image.ANTIALIAS)
@@ -75,8 +76,10 @@ def predictCaption():
     final = final[1:-1]
     final = ' '.join(final)
     predict = re.sub(r'\b(\w+)( \1\b)+', r'\1', final)
+    file_object  = open("./imageData/count.txt", "w") 
+    file_object.write(str(count))
+    file_object.close()
     os.remove(imageName)
-    gc.collect()
     return render_template('./result.html',prediction = predict, urlImg = url, count=count)
 
 if __name__ == '__main__':
