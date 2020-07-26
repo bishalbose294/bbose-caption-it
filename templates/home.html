@@ -45,6 +45,12 @@
 		textarea {
 				resize: none;
 		}
+		.bottomright {
+				position: absolute;
+				bottom: 8px;
+				right: 16px;
+				font-size: 18px;
+		}
 	</style>
 	<script>
 	function ClearForm(){
@@ -54,7 +60,6 @@
 </head>
 
 <body onload="ClearForm()">
-	
 	<form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
 		<div class='content'>
 		<h1 >Caption IT</h1>
@@ -63,5 +68,13 @@
 			<input type="submit" class='btncls' value="Submit">
 		</div>
 	</form>
+	<div class='bottomright'>
+		<h5>Disclaimer :
+		<ul>
+			<li>Link should directly open Image file</li>
+			<li>Model is Not Perfect !!!</li>
+		</ul>
+		</h5> 
+	</div>
 </body 
 </html>
