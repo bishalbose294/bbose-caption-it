@@ -46,9 +46,14 @@
 				resize: none;
 		}
 	</style>
+	<script>
+	function ClearForm(){
+				document.MyForm.reset();
+		}
+	</script>
 </head>
 
-<body>
+<body onload="ClearForm()">
 	
 	<form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
 		<div class='content'>
