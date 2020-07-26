@@ -1,7 +1,7 @@
 import os
 import pickle
 import numpy as np
-import cv2
+from PIL import Image
 import re
 import urllib
 from tensorflow.keras.models import Model
@@ -52,9 +52,8 @@ def loadModel():
 
 def vectorize_image(imageFileName):
     global inceptionModel
-    img = cv2.imread(imageFileName)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img,(299,299))
+    img = Image.open(imageFileName)
+    img = img.resize((299,299), Image.ANTIALIAS)
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
     vector = inceptionModel.predict(img)
@@ -111,4 +110,4 @@ if __name__ == '__main__':
     
     loadWordEmbeddings()
     loadModel()
-    app.run(port=8080,debug=True)
+    app.run()
