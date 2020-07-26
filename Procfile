@@ -1,1 +1,1 @@
-web: gunicorn app:CaptionIT
+web: gunicorn app:app
