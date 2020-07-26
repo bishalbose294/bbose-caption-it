@@ -5,3 +5,5 @@ tensorflow-cpu
 Flask==1.1.2
 urllib3==1.24.2
 gunicorn
+libsm6
+libxext6
