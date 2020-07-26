@@ -110,4 +110,11 @@ if __name__ == '__main__':
     
     loadWordEmbeddings()
     loadModel()
-    app.run()
+    
+    print(len(word_index_Mapping))
+    print(len(index_word_Mapping))
+    print(type(inceptionModel))
+    print(count)
+    print(max_caption_length)
+    
+    app.run(debug=True)
