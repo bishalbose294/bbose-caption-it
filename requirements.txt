@@ -1,9 +1,7 @@
-opencv-python==3.3.0.10
-pickleshare==0.7.5
-numpy==1.18.5
+opencv-python
+pickleshare
+numpy
 tensorflow-cpu
-Flask==1.1.2
-urllib3==1.24.2
+Flask
+urllib3
 gunicorn
-libsm6
-libxext6
