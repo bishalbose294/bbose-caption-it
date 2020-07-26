@@ -1,13 +1,62 @@
 <html>
-	<head>
-		<title>Caption IT</title>
-	</head>
-	<body>
-		<h2>Caption IT</h2>
-		<form name='imageName' method='POST' action={{ url_for('predictCaption') }}>
-			<label for="imageSource">Enter Image URL</label>
-			<input type='text' id='imageSource' name='imageSource'/>
-			<input type="submit" value="Submit">
-		</form>
-	</body
+
+<head>
+	<title>Caption IT</title>
+	<style>
+		body {
+				background-image: url("https://i.pinimg.com/originals/cb/53/c1/cb53c15e1f01254fbdcd9cde60825dba.jpg");
+				font-family: Georgia, Times, serif;
+				color: white;
+				background-color: powderblue
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+		}
+		h1 {
+				font-family: Helvetica, Arial
+		}
+		.content {
+				width: 500px;
+				height: 600px;
+				position: absolute; /*Can also be `fixed`*/
+				left: 10%;
+				right: 0;
+				top: 30%;
+				bottom: 0;
+				margin: auto;
+				/*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
+				max-width: 100%;
+				max-height: 100%;
+				overflow: auto;
+		}
+		.btncls{
+				background-color:#B80C4D;
+				border: #2e6da4;
+				font-family: Arial, Geneva, Arial, Helvetica,  sans-serif;
+				font-size: 15px;
+				color: #fff;
+				letter-spacing: 1px;
+				padding: 8px 12px;
+				font-size: 14px;
+				font-weight: normal;
+				border-radius: 4px;
+				line-height: 1.5;
+				text-decoration:none
+		}
+		textarea {
+				resize: none;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
+		<div class='content'>
+		<h1 >Caption IT</h1>
+			<label for="imageSource">Enter Image URL : &nbsp;&nbsp;&nbsp;&nbsp;</label></br></br>
+			<textarea id='imageSource' name='imageSource' rows=5 cols=50></textarea></br></br>
+			<input type="submit" class='btncls' value="Submit">
+		</div>
+	</form>
+</body 
 </html>
