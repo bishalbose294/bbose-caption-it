@@ -10,6 +10,7 @@ from tensorflow.keras.layers import add, BatchNormalization, LSTM, Dense, Embedd
 from tensorflow.keras import regularizers, optimizers, initializers
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from flask import Flask, render_template,  url_for, request
+import gc
 
 app = Flask(__name__)
 
@@ -75,6 +76,7 @@ def predictCaption():
     final = ' '.join(final)
     predict = re.sub(r'\b(\w+)( \1\b)+', r'\1', final)
     os.remove(imageName)
+    gc.collect()
     return render_template('./result.html',prediction = predict, urlImg = url, count=count)
 
 if __name__ == '__main__':
