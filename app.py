@@ -111,4 +111,4 @@ if __name__ == '__main__':
     
     loadWordEmbeddings()
     loadModel()
-    app.run()
+    app.run(port=8080,debug=True)
