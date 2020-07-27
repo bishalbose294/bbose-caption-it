@@ -80,7 +80,7 @@ def predictCaption():
     file_object.write(str(count))
     file_object.close()
     os.remove(imageName)
-    return render_template('./result.html',prediction = predict, urlImg = url, count=count)
+    return render_template('./result.html',prediction = predict, urlImg = url)
 
 if __name__ == '__main__':
     app.run()
