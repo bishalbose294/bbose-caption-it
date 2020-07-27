@@ -49,10 +49,7 @@ def home():
 
 @app.route('/predict',methods=['POST'])
 def predictCaption():
-    file_object  = open("./imageData/count.txt", "r") 
-    count = int(file_object.readline().strip())
-    file_object.close()
-    count += 1
+    count = 0
     url = request.form['imageSource']
     imageName = "./imageData/"+str(count)+".jpg"
     urllib.request.urlretrieve(url, imageName)
@@ -76,10 +73,11 @@ def predictCaption():
     final = final[1:-1]
     final = ' '.join(final)
     predict = re.sub(r'\b(\w+)( \1\b)+', r'\1', final)
-    file_object  = open("./imageData/count.txt", "w") 
-    file_object.write(str(count))
-    file_object.close()
     os.remove(imageName)
+    del img
+    del imageName
+    del vectorImg
+    del = final
     return render_template('./result.html',prediction = predict, urlImg = url)
 
 if __name__ == '__main__':
