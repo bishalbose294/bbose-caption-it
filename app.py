@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 from PIL import Image
 import re
+import gc
 import urllib
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications.inception_v3 import InceptionV3,preprocess_input
@@ -46,7 +47,6 @@ predictionModel.load_weights(model_weights_save_path)
 def home():
     return render_template('home.html')
 
-
 @app.route('/predict',methods=['POST'])
 def predictCaption():
     count = 0
@@ -77,7 +77,12 @@ def predictCaption():
     del img
     del imageName
     del vectorImg
-    del = final
+    del final
+    del count
+    del in_text
+    del seq
+    del inputs
+    gc.collect()
     return render_template('./result.html',prediction = predict, urlImg = url)
 
 if __name__ == '__main__':
