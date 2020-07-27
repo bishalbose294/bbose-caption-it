@@ -18,7 +18,6 @@ embedding_dim = 300
 count=0
 max_caption_length = 80
 
-
 word_index_Mapping = pickle.load(open('word_index_Mapping.pkl','rb'))
 index_word_Mapping = pickle.load(open('index_word_Mapping.pkl','rb'))
 
@@ -26,20 +25,6 @@ vocab_size = len(word_index_Mapping) + 1
 
 incpmodel = InceptionV3(weights='imagenet')
 inceptionModel = Model(incpmodel.input, incpmodel.layers[-2].output)
-
-'''
-image_input = Input(shape=(2048,))
-x = Dropout(0.5)(image_input)
-image_encode = Dense(256, activation='relu', kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(0.000001))(x)
-text_input = Input(shape=(max_caption_length,))
-x = Embedding(vocab_size, embedding_dim, mask_zero=True)(text_input)
-x = Dropout(0.5)(x)
-text_encode = LSTM(256, activation='tanh', kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(0.000001))(x)
-decoder_input = add([image_encode, text_encode])
-x = Dense(256, activation='relu', kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(0.000001))(decoder_input)
-output = Dense(vocab_size, activation='softmax')(x)
-predictionModel = Model(inputs=[image_input, text_input], outputs=output)
-'''
 
 model_weights_save_path = 'model.h5'
 predictionModel = load_model(model_weights_save_path)
@@ -75,6 +60,7 @@ def predictCaption():
     final = ' '.join(final)
     predict = re.sub(r'\b(\w+)( \1\b)+', r'\1', final)
     os.remove(imageName)
+    
     del img
     del imageName
     del vectorImg
@@ -84,6 +70,7 @@ def predictCaption():
     del seq
     del inputs
     gc.collect()
+    
     return render_template('./result.html',prediction = predict, urlImg = url)
 
 if __name__ == '__main__':
