@@ -5,7 +5,7 @@ from PIL import Image
 import re
 import gc
 import urllib
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.applications.inception_v3 import InceptionV3,preprocess_input
 from tensorflow.keras.layers import add, BatchNormalization, LSTM, Dense, Embedding, Dropout, Input
 from tensorflow.keras import regularizers, optimizers, initializers
@@ -27,6 +27,7 @@ vocab_size = len(word_index_Mapping) + 1
 incpmodel = InceptionV3(weights='imagenet')
 inceptionModel = Model(incpmodel.input, incpmodel.layers[-2].output)
 
+'''
 image_input = Input(shape=(2048,))
 x = Dropout(0.5)(image_input)
 image_encode = Dense(256, activation='relu', kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(0.000001))(x)
@@ -38,10 +39,10 @@ decoder_input = add([image_encode, text_encode])
 x = Dense(256, activation='relu', kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(0.000001))(decoder_input)
 output = Dense(vocab_size, activation='softmax')(x)
 predictionModel = Model(inputs=[image_input, text_input], outputs=output)
-
+'''
 
 model_weights_save_path = 'model.h5'
-predictionModel.load_weights(model_weights_save_path)
+predictionModel = load_model(model_weights_save_path)
 
 @app.route('/')
 def home():
