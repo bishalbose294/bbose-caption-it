@@ -1,89 +1,90 @@
 <html>
-
-<head>
-	<title>Caption IT</title>
-	<style>
-		body {
-				background-image: url("https://i.pinimg.com/originals/cb/53/c1/cb53c15e1f01254fbdcd9cde60825dba.jpg");
-				font-family: Georgia, Times, serif;
-				color: white;
-				background-color: powderblue
-				background-repeat: no-repeat;
-				background-size: 100% 100%;
-		}
-		h1 {
-				font-family: Helvetica, Arial
-		}
-		.content {
-				width: 500px;
-				height: 600px;
-				position: absolute; /*Can also be `fixed`*/
-				left: 10%;
-				right: 0;
-				top: 30%;
-				bottom: 0;
-				margin: auto;
-				/*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
-				max-width: 100%;
-				max-height: 100%;
-				overflow: auto;
-		}
-		.btncls{
-				background-color:#B80C4D;
-				border: #2e6da4;
-				font-family: Arial, Geneva, Arial, Helvetica,  sans-serif;
-				font-size: 15px;
-				color: #fff;
-				letter-spacing: 1px;
-				padding: 8px 12px;
-				font-size: 14px;
-				font-weight: normal;
-				border-radius: 4px;
-				line-height: 1.5;
-				text-decoration:none
-		}
-		textarea {
-				resize: none;
-		}
-		.bottomright {
-				position: absolute;
-				bottom: 8px;
-				left: 16px;
-				font-size: 14px;
-		}
-	</style>
-	<script>
-	function ClearForm(){
-				document.MyForm.reset();
-		}
-	</script>
-</head>
-
-<body onload="ClearForm()">
-	<form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
-		<div class='content'>
-		<h1 >Caption IT</h1>
-			<label for="imageSource">Enter Image URL : &nbsp;&nbsp;&nbsp;&nbsp;</label></br></br>
-			<textarea id='imageSource' name='imageSource' rows=5 cols=50></textarea></br></br>
-			<input type="submit" class='btncls' value="Submit">
-		</div>
-	</form>
-	<div class='bottomright'>
-		<h5>Disclaimer :
-		<ul>
-			<li>Link should directly open Image file</li>
-			<li>Model is Not Perfect !!!</li>
-		</ul>
-		</h5> 
-		<h5>Steps :
-		<ul>
-			<li>Find an image in Google like "dog playing" or "people walking" or "baby swimming" or "trekking" or "rock climbing" and copy the link of the Image, it should specifically be image link and not the website link
-			<br/>In Mobile: Tap on the Google image for 2 seconds and select open image in new tab and then copy the link from there.
-			<br/>In Desktop: Right click on the google image and select copy image link.
-			</li>
-			<li>Paste the link in the text box and click on submit, wait for a few seconds it will generate a caption and show u.</li>
-		</ul>
-		</h5> 
-	</div>
-</body 
+   <head>
+      <title>Caption IT</title>
+      <style>
+         body {
+         background-image: url("https://i.pinimg.com/originals/cb/53/c1/cb53c15e1f01254fbdcd9cde60825dba.jpg");
+         font-family: Georgia, Times, serif;
+         color: white;
+         background-color: powderblue
+         background-repeat: no-repeat;
+         background-size: 100% 100%;
+         }
+         h1 {
+         font-family: Helvetica, Arial
+         }
+         .content {
+         width: 500px;
+         height: 600px;
+         position: absolute; /*Can also be `fixed`*/
+         left: 10%;
+         right: 0;
+         top: 30%;
+         bottom: 0;
+         margin: auto;
+         /*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
+         max-width: 100%;
+         max-height: 100%;
+         overflow: auto;
+         }
+         .btncls{
+         background-color:#B80C4D;
+         border: #2e6da4;
+         font-family: Arial, Geneva, Arial, Helvetica,  sans-serif;
+         font-size: 15px;
+         color: #fff;
+         letter-spacing: 1px;
+         padding: 8px 12px;
+         font-size: 14px;
+         font-weight: normal;
+         border-radius: 4px;
+         line-height: 1.5;
+         text-decoration:none
+         }
+         textarea {
+         resize: none;
+         }
+         .bottomright {
+         position: absolute;
+         bottom: 8px;
+         left: 16px;
+         font-size: 14px;
+         }
+      </style>
+      <script>
+         function ClearForm(){
+         			document.MyForm.reset();
+         	}
+      </script>
+   </head>
+   <body onload="ClearForm()">
+      <form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
+      <div class='content'>
+         <h1 >Caption IT</h1>
+         <label for="imageSource">Enter Image URL : &nbsp;&nbsp;&nbsp;&nbsp;</label></br></br>
+         <textarea id='imageSource' name='imageSource' rows=5 cols=50></textarea>
+         </br></br>
+         <input type="submit" class='btncls' value="Submit">
+      </div>
+      </form>
+      <div class='bottomright'>
+         <h5>
+            Disclaimer :
+            <ul>
+               <li>Link should directly open Image file</li>
+               <li>Model is Not Perfect !!!</li>
+            </ul>
+         </h5>
+         <h5>
+            Steps :
+            <ul>
+               <li>Find an image in Google like "dog playing" or "people walking" or "baby swimming" or "trekking" or "rock climbing" and copy the link of the Image, it should specifically be image link and not the website link
+                  <br/>In Mobile: Tap on the Google image for 2 seconds and select open image in new tab and then copy the link from there.
+                  <br/>In Desktop: Right click on the google image and select copy image link.
+               </li>
+               <li>Paste the link in the text box and click on submit, wait for a few seconds it will generate a caption and show u.</li>
+            </ul>
+         </h5>
+      </div>
+      </body 
 </html>
