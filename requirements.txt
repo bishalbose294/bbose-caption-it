@@ -1,7 +1,9 @@
+torch
+transformers
 pillow
 pickleshare
 numpy
 tensorflow-cpu
 Flask
-urllib3
-gunicorn
+flask_cors
+gevent

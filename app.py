@@ -1,77 +1,47 @@
-import os
-import pickle
-import numpy as np
+import os, io, base64
+from imageCaptionGPT import predictCustomModel, predictHFModel
+from flask import Flask, render_template, request
+from flask_cors import CORS
 from PIL import Image
-import re
-import gc
-import urllib
-from tensorflow.keras.models import Model, load_model
-from tensorflow.keras.applications.inception_v3 import InceptionV3,preprocess_input
-from tensorflow.keras.layers import add, BatchNormalization, LSTM, Dense, Embedding, Dropout, Input
-from tensorflow.keras import regularizers, optimizers, initializers
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from flask import Flask, render_template,  url_for, request
+from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
+CORS(app)
 
-embedding_dim = 300
-count=0
-max_caption_length = 80
+cwd = os.getcwd()
 
-word_index_Mapping = pickle.load(open('word_index_Mapping.pkl','rb'))
-index_word_Mapping = pickle.load(open('index_word_Mapping.pkl','rb'))
+app.config["ALLOWED_EXTENSIONS"] = [".jpg", ".png"]
+app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
+app.config["UPLOAD_FOLDER"] = os.path.join(cwd, "uploads")
 
-vocab_size = len(word_index_Mapping) + 1
 
-incpmodel = InceptionV3(weights='imagenet')
-inceptionModel = Model(incpmodel.input, incpmodel.layers[-2].output)
-
-model_weights_save_path = 'model.h5'
-predictionModel = load_model(model_weights_save_path)
-
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('home.html')
+    return render_template("home.html", predictionCustomModel="", predictionHFModel="", img_data="")
 
-@app.route('/predict',methods=['POST'])
+
+@app.route("/predict", methods=["POST"])
 def predictCaption():
-    count = 0
-    url = request.form['imageSource']
-    imageName = "./imageData/"+str(count)+".jpg"
-    urllib.request.urlretrieve(url, imageName)
-    img = Image.open(imageName)
-    img = img.resize((299,299), Image.ANTIALIAS)
-    img = np.expand_dims(img, axis=0)
-    img = preprocess_input(img)
-    vectorImg = inceptionModel.predict(img)
-    in_text = 'startSeq'
-    for i in range(1, max_caption_length):
-        seq = [word_index_Mapping[w] for w in in_text.split() if w in word_index_Mapping]
-        in_seq = pad_sequences([seq], maxlen=max_caption_length)
-        inputs = [vectorImg,in_seq]
-        yhat = predictionModel.predict(x=inputs, verbose=0)
-        yhat = np.argmax(yhat)
-        word = index_word_Mapping[yhat]
-        in_text += ' ' + word
-        if word == 'endSeq':
-            break
-    final = in_text.split()
-    final = final[1:-1]
-    final = ' '.join(final)
-    predict = re.sub(r'\b(\w+)( \1\b)+', r'\1', final)
-    os.remove(imageName)
-    
-    del img
-    del imageName
-    del vectorImg
-    del final
-    del count
-    del in_text
-    del seq
-    del inputs
-    gc.collect()
-    
-    return render_template('./result.html',prediction = predict, urlImg = url)
+    file = request.files["file"]
+    imagePath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+    file.save(imagePath)
+    img = Image.open(imagePath)
+    with io.BytesIO() as buf:
+        img.save(buf, "jpeg")
+        image_bytes = buf.getvalue()
+    encoded_string = base64.b64encode(image_bytes).decode()
+    predictionCustomModel = predictCustomModel(img)
+    predictionHFModel = predictHFModel(img)
+    predictionCustomModel = "Custom Model:- \'"+str(predictionCustomModel)+"\'"
+    predictionHFModel = "HuggingFace Model:- \'"+str(predictionHFModel)+"\'"
+    os.remove(imagePath)
+    return render_template("home.html", predictionCustomModel=predictionCustomModel, predictionHFModel=predictionHFModel, img_data=encoded_string)
+
 
 if __name__ == '__main__':
-    app.run()
+    host = '0.0.0.0'
+    port = 7860
+    print("#"*50,"--Application Serving Now--","#"*50)
+    # app.run(host=host,port=port)
+    app_serve = WSGIServer((host,port),app)
+    app_serve.serve_forever()

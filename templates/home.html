@@ -1,36 +1,49 @@
+<!DOCTYPE html>
 <html>
-   <head>
-      <title>Caption IT</title>
-      <style>
-         body {
+
+<head>
+   <title>Caption-GPT</title>
+   <style>
+      body {
          background-image: url("https://i.pinimg.com/originals/cb/53/c1/cb53c15e1f01254fbdcd9cde60825dba.jpg");
          font-family: Georgia, Times, serif;
          color: white;
-         background-color: powderblue
+         background-color: powderblue;
          background-repeat: no-repeat;
-         background-size: 100% 100%;
-         }
-         h1 {
-         font-family: Helvetica, Arial
-         }
-         .content {
-         width: 500px;
-         height: 600px;
-         position: absolute; /*Can also be `fixed`*/
+      }
+
+      img {
+         width:300px;
+         height:300px;
+         background-image: url("https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-network-placeholder-png-image_3416659.jpg");
+         background-position: center;
+         background-size: contain;
+      }
+
+      h1 {
+         font-family: Helvetica, Arial;
+      }
+
+      .content {
+         width: 800px;
+         height: 800px;
+         position: absolute;
+         /*Can also be `fixed`*/
          left: 10%;
          right: 0;
-         top: 30%;
+         top: 10%;
          bottom: 0;
          margin: auto;
          /*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
          max-width: 100%;
          max-height: 100%;
          overflow: auto;
-         }
-         .btncls{
-         background-color:#B80C4D;
+      }
+
+      .btncls {
+         background-color: #B80C4D;
          border: #2e6da4;
-         font-family: Arial, Geneva, Arial, Helvetica,  sans-serif;
+         font-family: Arial, Geneva, Arial, Helvetica, sans-serif;
          font-size: 15px;
          color: #fff;
          letter-spacing: 1px;
@@ -39,52 +52,50 @@
          font-weight: normal;
          border-radius: 4px;
          line-height: 1.5;
-         text-decoration:none
-         }
-         textarea {
+         text-decoration: none
+      }
+
+      textarea {
          resize: none;
+      }
+   </style>
+   <script>
+      function uploadCheck() {
+         var nme = document.getElementById("file");
+         if (nme.value.length < 1) {
+            alert("Please select image to upload..");
+            nme.focus();
+            return false;
          }
-         .bottomright {
-         position: absolute;
-         bottom: 8px;
-         left: 16px;
-         font-size: 14px;
+         else {
+            document.getElementById("image").submit();
          }
-      </style>
-      <script>
-         function ClearForm(){
-         			document.MyForm.reset();
-         	}
-      </script>
-   </head>
-   <body onload="ClearForm()">
-      <form name='imageName' method='POST' action={{ url_for( 'predictCaption') }}>
-      <div class='content'>
-         <h1 >Caption IT</h1>
-         <label for="imageSource">Enter Image URL : &nbsp;&nbsp;&nbsp;&nbsp;</label></br></br>
-         <textarea id='imageSource' name='imageSource' rows=5 cols=50></textarea>
-         </br></br>
-         <input type="submit" class='btncls' value="Submit">
-      </div>
+      }
+      function refreshPage() {
+         window.location = "/"
+      }
+   </script>
+</head>
+
+<body>
+   <div class='content'>
+      <h3>Upload Image Here:
+      </h3>
+      <form name="image" id="image" method="POST" action={{ url_for( "predictCaption" ) }}
+         enctype="multipart/form-data">
+         <input type="file" class="btn" id="file" name="file" autocomplete="off"> &nbsp; &nbsp; &nbsp; &nbsp;
+         <input type="button" class="btncls" value="Gnerate" onClick="uploadCheck();">&nbsp;&nbsp;
+         <input type="button" class="btncls" value="Clear" onclick="refreshPage();">
       </form>
-      <div class='bottomright'>
-         <h5>
-            Disclaimer :
-            <ul>
-               <li>Link should directly open Image file</li>
-               <li>Model is Not Perfect !!!</li>
-            </ul>
-         </h5>
-         <h5>
-            Steps :
-            <ul>
-               <li>Find an image in Google like "dog playing" or "people walking" or "baby swimming" or "trekking" or "rock climbing" and copy the link of the Image, it should specifically be image link and not the website link
-                  <br/>In Mobile: Tap on the Google image for 2 seconds and select open image in new tab and then copy the link from there.
-                  <br/>In Desktop: Right click on the google image and select copy image link.
-               </li>
-               <li>Paste the link in the text box and click on submit, wait for a few seconds it will generate a caption and show u.</li>
-            </ul>
-         </h5>
-      </div>
-      </body 
+      <br><br>
+      <label style='font-family: "Comic Sans MS", cursive, sans-serif;'>Image : </label>
+         <br><br>
+         <image src="data:image/jpeg;base64,{{ img_data }}" height=300 width=300 />
+         <br><br>
+         <h3>{{ predictionCustomModel }}</h3>
+         <h3>{{ predictionHFModel }}</h3>
+      <br>
+   </div>
+</body>
+
 </html>
